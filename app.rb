@@ -86,16 +86,7 @@ def list
 
 	normal_list
 
-	# everyone = List.all
-
-	#     puts "No.".ljust(4) + "Name".ljust(20) +      "Phone".ljust(16)   +     "Address".ljust(30)
-	#     puts "===".ljust(4) + "====".ljust(20) +      "=====".ljust(16)   +     "==========".ljust(30) 
-	#     blank_line
-	    
-
-	# everyone.each do |row|
-	# 	puts "#{row.id}.".ljust(4) + "#{row.name}".ljust(20) +  "#{row.phone}".ljust(16) +  "#{row.address}".ljust(30)
-	# end
+	
 	blank_line
 end
 
@@ -105,6 +96,8 @@ def add(name, phone, address)
 
       clear_screen
       blank_line
+      20.times do blank_line  
+      end
       puts "Congrats! Name: #{name}, Phone: #{phone}, Address: #{address} has been added!".center(180)
       blank_line
       puts "HERE IS YOUR UPDATED LIST!".center(180)
@@ -118,32 +111,68 @@ end
 
 def update(id, name, phone, address)
 
-  list_of_ids = []
+	#ALTERNATIVE FIND METHOD
+	#List.where(id: 7)
+	#Will give you blank array if dont have
+	#Else will give you the row
+	#If don't have can array.count will == 0
 
-  List.all.each do |idv|
-	  list_of_ids << idv.id
-  end
+	#List.find(7) 
+	#Will give you Error if don't have
+	#Nicer row of hash values if have, better than where
 
-  if (list_of_ids.include?id) == false
+
+  target_id = List.where(id: id)
+
+  if target_id.count == 0
 
   	clear_screen
+  	20.times do blank_line  
+    end 
   	puts "Sorry man, there is no such id/person! Did you remember correctly? Please try again..".center(180)
     sleep(3)
     clear_screen
     normal_list
     blank_line
+
+else
+	target_person = List.find(id)
+	target_person.update(name: name, phone: phone, address: address)
+
+
+
+  # list_of_ids = []
+
+  # List.all.each do |idv|
+	 #  list_of_ids << idv.id
+  # end
+
+  # if (list_of_ids.include?id) == false
+
+  # 	clear_screen
+  # 	puts "Sorry man, there is no such id/person! Did you remember correctly? Please try again..".center(180)
+  #   sleep(3)
+  #   clear_screen
+  #   normal_list
+  #   blank_line
    
     
-  else
-  	list_of_people = List.where(id: id)
-  	target = list_of_people[0]
-  	target.name = name
-  	target.phone = phone
-  	target.address = address
+  # else
+  # 	list_of_people = List.where(id: id)
+  # 	target = list_of_people[0]
+  # 	target.update(name: name, phone: phone, address: address)
 
-  	target.save
+    #SEPARATED COMMENTS UN COMMENTS 
+
+  	# target.name = name
+  	# target.phone = phone
+  	# target.address = address
+
+  	# target.save
   
   	clear_screen
+  	20.times do blank_line  
+    end 
   	puts "Yayy! The new data has been updated!".center(180)
   	blank_line
   	puts "HERE IS YOUR NEW CONTACT LIST!".center(180)
@@ -165,15 +194,22 @@ end
 
 def delete(id)
 
-    list_of_ids = []
+   #  list_of_ids = []
 
-    List.all.each do |idv|
-	  list_of_ids << idv.id
-    end
+   #  List.all.each do |idv|
+	  # list_of_ids << idv.id
+   #  end
 
-    if (list_of_ids.include?id) == false
+   #  if (list_of_ids.include?id) == false
+
+    target_id = List.where(id: id)
+
+    if target_id.count == 0
+
+
     clear_screen
-   
+    20.times do blank_line  
+    end  
   	puts "Sorry man, there is no such id/person! Did you remember correctly? Please try again..".center(180)
     blank_line
     puts "Your list still looks like this! Woohoo!".center(180)
@@ -182,11 +218,17 @@ def delete(id)
     normal_list
     blank_line
     else
-  	list_of_people = List.where(id: id)
-  	target = list_of_people[0]
-  	target.destroy
+
+    target_person = List.find(id)
+	target_person.destroy
+
+  	# list_of_people = List.where(id: id)
+  	# target = list_of_people[0]
+  	# target.destroy
     
     clear_screen
+    20.times do blank_line  
+    end 
   	puts "Muahahhahaahha!! AHHAHA! We've found that person and BLOWN that person up!".center(180)
   	blank_line
   	puts "THIS IS YOUR UPDATED CONTACT LIST WITH THAT PERSON DEAD! MUAHAHAHHAHA!".center(180)
@@ -197,14 +239,14 @@ def delete(id)
     end 
 end
 
-
-if ARGV[0] == "list"
+case
+when ARGV[0] == "list"
 	list
-elsif ARGV[0] == "add"
+when ARGV[0] == "add"
 	add(ARGV[1],ARGV[2],ARGV[3])
-elsif ARGV[0] == "delete"
+when ARGV[0] == "delete"
 	delete(ARGV[1].to_i)
-elsif ARGV[0] == "update"
+when ARGV[0] == "update"
 	update(ARGV[1].to_i, ARGV[2], ARGV[3],ARGV[4])
 end
 

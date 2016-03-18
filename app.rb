@@ -121,12 +121,14 @@ def update(v, name, phone, address)
 	#Will give you Error if don't have
 	#Nicer row of hash values if have, better than where
 
-  id = List.all[v.to_i - 1][:id]
+  if List.all[v.to_i - 1] == nil
+
+  # id = List.all[v.to_i - 1][:id]
 
 
-  target_id = List.where(id: id)
+  # target_id = List.where(id: id)
 
-  if target_id.count == 0
+  # if target_id.count == 0
 
   	clear_screen
   	20.times do blank_line  
@@ -138,6 +140,7 @@ def update(v, name, phone, address)
     blank_line
 
 else
+	id = List.all[v.to_i - 1][:id]
 	target_person = List.find(id)
 	target_person.update(name: name, phone: phone, address: address)
 
@@ -196,8 +199,10 @@ end
 
 def delete(v)
 
+	if List.all[v.to_i - 1] == nil
 
-	id = List.all[v.to_i - 1][:id]
+
+	# id = List.all[v.to_i - 1][:id]
 
    #  list_of_ids = []
 
@@ -207,9 +212,9 @@ def delete(v)
 
    #  if (list_of_ids.include?id) == false 
 
-    target_id = List.where(id: id)
+    # target_id = List.where(id: id)
 
-    if target_id.count == 0
+    # if target_id.count == 0
 
 
     clear_screen
@@ -223,6 +228,7 @@ def delete(v)
     normal_list
     blank_line
     else
+    id = List.all[v.to_i - 1][:id]
 
     target_person = List.find(id)
 	target_person.destroy

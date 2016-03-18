@@ -72,8 +72,8 @@ def normal_list
 	blank_line
 	    
 
-	everyone.each do |row|
-		puts "#{row.id}.".ljust(4) + "#{row.name}".ljust(20) +  "#{row.phone}".ljust(16) +  "#{row.address}".ljust(30)
+	everyone.each_with_index do |row, index|
+		puts "#{index +1}.".ljust(4) + "#{row.name}".ljust(20) +  "#{row.phone}".ljust(16) +  "#{row.address}".ljust(30)
 	end
 
 end
@@ -109,7 +109,7 @@ def add(name, phone, address)
 end
 
 
-def update(id, name, phone, address)
+def update(v, name, phone, address)
 
 	#ALTERNATIVE FIND METHOD
 	#List.where(id: 7)
@@ -120,6 +120,8 @@ def update(id, name, phone, address)
 	#List.find(7) 
 	#Will give you Error if don't have
 	#Nicer row of hash values if have, better than where
+
+  id = List.all[v.to_i - 1][:id]
 
 
   target_id = List.where(id: id)
@@ -192,7 +194,10 @@ end
 # list
 
 
-def delete(id)
+def delete(v)
+
+
+	id = List.all[v.to_i - 1][:id]
 
    #  list_of_ids = []
 
@@ -200,7 +205,7 @@ def delete(id)
 	  # list_of_ids << idv.id
    #  end
 
-   #  if (list_of_ids.include?id) == false
+   #  if (list_of_ids.include?id) == false 
 
     target_id = List.where(id: id)
 
